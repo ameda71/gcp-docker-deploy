@@ -10,7 +10,7 @@ resource "google_compute_instance" "web_server" {
 
   boot_disk {
     initialize_params {
-      image = "debian-cloud/debian-10-buster-v20210916"
+      image = "debian-11"
     }
   }
 
