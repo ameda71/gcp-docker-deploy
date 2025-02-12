@@ -13,10 +13,12 @@ pipeline {
             }
         }
 
-        stage('Build Docker Image') {
+       stage('Build Docker Image') {
     steps {
         script {
-            sh 'docker build -t saiteja562/my-web-app:latest .'
+            def imageName = "saiteja562/ping"
+            def imageTag = "latest"
+            sh "docker build -t ${imageName}:${imageTag} ."
         }
     }
 }
@@ -24,12 +26,16 @@ pipeline {
 stage('Push Docker Image to Docker Hub') {
     steps {
         script {
+            def imageName = "saiteja562/ping"
+            def imageTag = "latest"
+
             docker.withRegistry('https://index.docker.io/v1/', DOCKER_HUB_CREDENTIALS) {
-                docker.image('saiteja562/my-web-app').push('latest')
+                docker.image("${imageName}:${imageTag}").push()
             }
         }
     }
 }
+
 
 
         stage('Terraform Init & Apply') {
