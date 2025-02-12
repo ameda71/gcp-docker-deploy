@@ -3,6 +3,7 @@ pipeline {
 
     environment {
         DOCKER_IMAGE = 'my-web-app'
+        GOOGLE_CRED = credentials("id")
     }
 
     stages {
