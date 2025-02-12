@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         DOCKER_IMAGE = 'my-web-app'
-        // GOOGLE_CRED = credentials("id")  // Make sure "id" is the correct credentials ID in Jenkins
+        GOOGLE_CRED = credentials("id")  // Make sure "id" is the correct credentials ID in Jenkins
     }
 
     stages {
