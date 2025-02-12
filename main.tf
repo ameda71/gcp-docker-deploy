@@ -1,5 +1,5 @@
 provider "google" {
-  credentials = file("cherr.json")  # Path to GCP service account key
+  # Path to GCP service account key
   project     = var.project_id                             # GCP Project ID
   region      = var.region                                  # GCP region, e.g., "us-central1"
 }
