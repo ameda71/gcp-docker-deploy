@@ -14,22 +14,23 @@ pipeline {
         }
 
         stage('Build Docker Image') {
-            steps {
-                script {
-                    docker.build(DOCKER_IMAGE, '.')
-                }
-            }
+    steps {
+        script {
+            sh 'docker build -t saiteja562/my-web-app:latest .'
         }
+    }
+}
 
-        stage('Push Docker Image to Docker Hub') {
-            steps {
-                script {
-                    docker.withRegistry('https://index.docker.io/v1/', DOCKER_HUB_CREDENTIALS) {
-                        docker.image(DOCKER_IMAGE).push('latest')
-                    }
-                }
+stage('Push Docker Image to Docker Hub') {
+    steps {
+        script {
+            docker.withRegistry('https://index.docker.io/v1/', DOCKER_HUB_CREDENTIALS) {
+                docker.image('saiteja562/my-web-app').push('latest')
             }
         }
+    }
+}
+
 
         stage('Terraform Init & Apply') {
             steps {
