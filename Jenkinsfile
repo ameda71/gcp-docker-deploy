@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         DOCKER_IMAGE = 'my-web-app'
-        GOOGLE_APPLICATION_CREDENTIALS = credentials('id')
+        GOOGLE_APPLICATION_CREDENTIALS = credentials('greddy')
   
     }
 
