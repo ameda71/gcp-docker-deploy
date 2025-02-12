@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     environment {
-        GCP_CREDENTIALS = credentials('cherr.json')  // Jenkins credentials for GCP
-        DOCKER_HUB_CREDENTIALS = credentials('dockerhub-credentials')  // Jenkins credentials for Docker Hub
+        DOCKER_IMAGE = 'my-web-app'
+        DOCKER_HUB_CREDENTIALS = credentials('dockerhub-credentials') // Docker Hub credentials
     }
 
     stages {
@@ -16,7 +16,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    sh 'docker build -t $DOCKER_HUB_CREDENTIALS_USR/$DOCKER_HUB_CREDENTIALS_PSW:latest .'
+                    docker.build(DOCKER_IMAGE, '.')
                 }
             }
         }
@@ -24,26 +24,18 @@ pipeline {
         stage('Push Docker Image to Docker Hub') {
             steps {
                 script {
-                    sh 'docker login -u $DOCKER_HUB_CREDENTIALS_USR -p $DOCKER_HUB_CREDENTIALS_PSW'
-                    sh 'docker push $DOCKER_HUB_CREDENTIALS_USR/$DOCKER_HUB_CREDENTIALS_PSW:latest'
+                    docker.withRegistry('https://index.docker.io/v1/', DOCKER_HUB_CREDENTIALS) {
+                        docker.image(DOCKER_IMAGE).push('latest')
+                    }
                 }
             }
         }
 
-        stage('Initialize Terraform') {
+        stage('Terraform Init & Apply') {
             steps {
                 script {
                     sh 'terraform init'
-                }
-            }
-        }
-
-        stage('Terraform Apply') {
-            steps {
-                script {
-                    sh """
-                        terraform apply -var="project_id=$GCP_PROJECT_ID" -var="docker_image=$DOCKER_HUB_CREDENTIALS_USR/$DOCKER_HUB_CREDENTIALS_PSW:latest" -auto-approve
-                    """
+                    sh 'terraform apply -auto-approve'
                 }
             }
         }
@@ -51,12 +43,16 @@ pipeline {
         stage('Verify Deployment') {
             steps {
                 script {
-                    def instance_ip = sh(script: "terraform output instance_ip", returnStdout: true).trim()
-                    echo "Deployed application is accessible at http://$instance_ip"
+                    def ip = sh(script: 'terraform output -raw instance_ip', returnStdout: true).trim()
+                    echo "Web server is accessible at: http://${ip}"
                 }
             }
         }
     }
 
-    
+    post {
+        always {
+            cleanWs()
+        }
+    }
 }
