@@ -3,7 +3,8 @@ pipeline {
 
     environment {
         DOCKER_IMAGE = 'my-web-app'
-        GOOGLE_CRED = credentials("id")  // Make sure "id" is the correct credentials ID in Jenkins
+        GOOGLE_APPLICATION_CREDENTIALS = credentials('id')
+  
     }
 
     stages {
@@ -45,18 +46,7 @@ pipeline {
         stage('Terraform Init & Apply') {
             steps {
                 script {
-                    // // // Fetch Google Cloud credentials from Jenkins
-                    // // withCredentials([file(credentialsId: 'id', variable: 'GOOGLE_CRED')]) {
-                    // //     // Set up the Google Cloud credentials for Terraform
-                    // //     sh 'export GOOGLE_APPLICATION_CREDENTIALS=$GOOGLE_CRED'
-                    //     
-                        
-                    //     // // Run terraform apply with error handling
-                    //     // sh ''' 
-                    //     //     set -e  # Exit immediately if a command exits with a non-zero status
-                    //        
-                        
-                    // }
+    
                     sh 'terraform init'
                      sh "terraform apply -auto-approve"
                 }
