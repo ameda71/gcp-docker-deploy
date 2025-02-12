@@ -1,5 +1,4 @@
 provider "google" {
-credentials = file("irshaq.json")
   project     = "project-irshaq"
   region      = "us-central1"
 }
