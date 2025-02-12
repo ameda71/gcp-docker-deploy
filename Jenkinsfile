@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         DOCKER_IMAGE = 'my-web-app'
-        GOOGLE_CRED = credentials("id")
+        GOOGLE_CRED = credentials("id")  // Make sure "id" is the correct credentials ID in Jenkins
     }
 
     stages {
@@ -18,6 +18,7 @@ pipeline {
                 script {
                     def imageName = "saiteja562/ping"
                     def imageTag = "latest"
+                    // Build the Docker image
                     sh "docker build -t ${imageName}:${imageTag} ."
                 }
             }
@@ -44,13 +45,18 @@ pipeline {
         stage('Terraform Init & Apply') {
             steps {
                 script {
+                    // Fetch Google Cloud credentials from Jenkins
                     withCredentials([file(credentialsId: 'id', variable: 'GOOGLE_CRED')]) {
-    sh 'export GOOGLE_APPLICATION_CREDENTIALS=$GOOGLE_CRED'
-    sh 'terraform init'
-    sh 'terraform apply -auto-approve'
-}
-
-                
+                        // Set up the Google Cloud credentials for Terraform
+                        sh 'export GOOGLE_APPLICATION_CREDENTIALS=$GOOGLE_CRED'
+                        sh 'terraform init'
+                        
+                        // Run terraform apply with error handling
+                        sh ''' 
+                            set -e  # Exit immediately if a command exits with a non-zero status
+                            terraform apply -auto-approve
+                        '''
+                    }
                 }
             }
         }
@@ -67,7 +73,7 @@ pipeline {
 
     post {
         always {
-            cleanWs()
+            cleanWs()  // Clean workspace after pipeline run
         }
     }
 }
