@@ -1,14 +1,4 @@
-# Use official Ubuntu as base image
-FROM ubuntu:20.04
-
-# Install Apache web server
-RUN apt-get update && apt-get install -y apache2
-
-# Copy the HTML file to the Apache web directory
-COPY simple.html /var/www/html/index.html
-
-# Expose the port Apache runs on
+FROM nginx:alpine
+COPY simple.html /usr/share/nginx/html/index.html
 EXPOSE 80
-
-# Start Apache in the background when the container runs
-CMD ["apache2ctl", "-D", "FOREGROUND"]
+CMD ["nginx", "-g", "daemon off;"]
