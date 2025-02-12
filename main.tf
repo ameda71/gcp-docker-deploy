@@ -1,6 +1,6 @@
 provider "google" {
-credentials = file("finalkey.json")
-  project     = "saitejaameda"
+credentials = file("irshaq.json")
+  project     = "project-irshaq"
   region      = "us-central1"
 }
 
