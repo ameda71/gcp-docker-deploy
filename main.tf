@@ -6,7 +6,7 @@ credentials = file("irshaq.json")
 
 resource "google_compute_instance" "web_server" {
   name         = "web-server"
-  machine_type = "f1-micro"
+  machine_type = "e2-micro"
   zone         = "us-central1-c"
 
   boot_disk {
