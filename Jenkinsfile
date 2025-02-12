@@ -45,18 +45,20 @@ pipeline {
         stage('Terraform Init & Apply') {
             steps {
                 script {
-                    // // Fetch Google Cloud credentials from Jenkins
-                    // withCredentials([file(credentialsId: 'id', variable: 'GOOGLE_CRED')]) {
-                    //     // Set up the Google Cloud credentials for Terraform
-                    //     sh 'export GOOGLE_APPLICATION_CREDENTIALS=$GOOGLE_CRED'
-                        sh 'terraform init'
+                    // // // Fetch Google Cloud credentials from Jenkins
+                    // // withCredentials([file(credentialsId: 'id', variable: 'GOOGLE_CRED')]) {
+                    // //     // Set up the Google Cloud credentials for Terraform
+                    // //     sh 'export GOOGLE_APPLICATION_CREDENTIALS=$GOOGLE_CRED'
+                    //     
                         
-                        // // Run terraform apply with error handling
-                        // sh ''' 
-                        //     set -e  # Exit immediately if a command exits with a non-zero status
-                            sh "terraform apply -auto-approve"
+                    //     // // Run terraform apply with error handling
+                    //     // sh ''' 
+                    //     //     set -e  # Exit immediately if a command exits with a non-zero status
+                    //        
                         
-                    }
+                    // }
+                    sh 'terraform init'
+                     sh "terraform apply -auto-approve"
                 }
             }
         }
