@@ -44,8 +44,13 @@ pipeline {
         stage('Terraform Init & Apply') {
             steps {
                 script {
-                    sh 'terraform init'
-                    sh 'terraform apply -auto-approve'
+                    withCredentials([file(credentialsId: 'id', variable: 'GOOGLE_CRED')]) {
+    sh 'export GOOGLE_APPLICATION_CREDENTIALS=$GOOGLE_CRED'
+    sh 'terraform init'
+    sh 'terraform apply -auto-approve'
+}
+
+                
                 }
             }
         }
