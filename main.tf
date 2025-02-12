@@ -1,6 +1,6 @@
 provider "google" {
-  credentials = file("cherr.json")
-  project     = "<YOUR-PROJECT-ID>"
+  credentials = file("finalkey.json")
+  project     = "saitejaameda"
   region      = "us-central1"
 }
 
