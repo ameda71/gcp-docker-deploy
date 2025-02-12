@@ -45,22 +45,15 @@ pipeline {
 
         stage('Terraform Init & Apply') {
             steps {
-                script {
+               
     
                     sh 'terraform init'
                      sh "terraform apply -auto-approve"
-                }
+                
             }
         }
 
-        stage('Verify Deployment') {
-            steps {
-                script {
-                    def ip = sh(script: 'terraform output -raw instance_ip', returnStdout: true).trim()
-                    echo "Web server is accessible at: http://${ip}"
-                }
-            }
-        }
+        
     }
 
     post {
