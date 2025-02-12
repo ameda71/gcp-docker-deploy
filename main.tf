@@ -1,5 +1,4 @@
 provider "google" {
-  credentials = file("finalkey.json")
   project     = "saitejaameda"
   region      = "us-central1"
 }
