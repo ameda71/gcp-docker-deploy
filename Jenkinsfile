@@ -54,7 +54,7 @@ pipeline {
                         // // Run terraform apply with error handling
                         // sh ''' 
                         //     set -e  # Exit immediately if a command exits with a non-zero status
-                            sh terraform apply -auto-approve
+                            sh "terraform apply -auto-approve"
                         
                     }
                 }
