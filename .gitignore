@@ -1,0 +1,12 @@
+# Ignore terraform state files
+*.tfstate
+*.tfstate.*
+
+# Ignore Docker build files
+docker_image.tar
+
+# Ignore Jenkins workspace
+workspace/
+
+# Ignore any other temporary files
+*.log
